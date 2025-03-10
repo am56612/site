@@ -1,13 +1,21 @@
 <?php
-// Check if the POST request contains a 'string' parameter
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['string'])) {
-    // Retrieve the string from the POST request
-    $receivedString = $_POST['string'];
+// API URL
+$apiUrl = "https://api.genderize.io?name=alex";
 
-    // Display the string
-    echo "Received string: " . htmlspecialchars($receivedString, ENT_QUOTES, 'UTF-8');
+// Send GET request to the API
+$response = file_get_contents($apiUrl);
+
+// Check if the request was successful
+if ($response !== false) {
+    // Decode the JSON response
+    $data = json_decode($response, true);
+
+    // Display the result
+    echo "Name: " . $data['name'] . "<br>";
+    echo "Gender: " . $data['gender'] . "<br>";
+    echo "Probability: " . $data['probability'] . "<br>";
+    echo "Count: " . $data['count'] . "<br>";
 } else {
-    // Handle the case where the POST request doesn't contain the parameter
-    echo "No string was sent in the POST request.";
+    echo "Failed to fetch data from the API.";
 }
 ?>
